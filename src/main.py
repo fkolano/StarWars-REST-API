@@ -8,7 +8,7 @@ from flask_swagger import swagger
 from flask_cors import CORS
 from utils import APIException, generate_sitemap
 from admin import setup_admin
-from models import db, User, Characters, Planets
+from models import db, User, Characters, Planets, Favorite_Planets, Favorite_Characters
 #from models import Person
 
 app = Flask(__name__)
@@ -31,13 +31,32 @@ def sitemap():
     return generate_sitemap(app)
 
 @app.route('/user', methods=['GET'])
-def handle_hello():
+def get_all_users():
 
     response_body = {
         "msg": "Hello, this is your GET /user response "
     }
 
     return jsonify(response_body), 200
+
+@app.route('/user/favorites', methods=['GET'])
+def get_all_favorites():
+
+    response_body = {
+        "msg": "Hello, this is your GET /user/favorites response "
+    }
+
+    return jsonify(response_body), 200
+
+@app.route('/user/<int:user_id>/favorites', methods=['GET'])
+def get_user_favorites(user_id):
+
+    response_body = {
+        "msg": "Hello, this is your GET /user/favorites response "
+    }
+
+    return jsonify(response_body), 200
+
 
 
 @app.route('/characters', methods=['GET'])
@@ -65,6 +84,13 @@ def handle_planets():
 
     return jsonify(all_planets), 200
 
+
+@app.route('/planets/<int:id>', methods=['GET'])
+def get_single_planets(id):
+    single_person = planets.query.get(id)
+
+
+    return jsonify(single_person.serialize()), 200
 # @app.route('/characters', methods=['GET'])
 # def handle_hello():
 

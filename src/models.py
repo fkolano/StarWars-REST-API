@@ -9,7 +9,7 @@ class User(db.Model):
     is_active = db.Column(db.Boolean(), unique=False, nullable=False)
 
     def __repr__(self):
-        return '<User %r>' % self.username
+        return '<User %r>' % self.email
 
     def serialize(self):
         return {
@@ -17,6 +17,43 @@ class User(db.Model):
             "email": self.email,
             # do not serialize the password, its a security breach
         }
+
+class Favorite_Characters(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user = db.relationship("User", backref="favorite_characters", uselist=False)
+    charcter_id = db.Column(db.Integer, db.ForeignKey('characters.id'), nullable=False)
+    character = db.relationship("Characters", uselist=False)
+
+    def __repr__(self):
+        return '<Favorite_Characters %r>' % self.id
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "user_id": self.user_id,
+            "character_id": self.character_id
+        }
+
+class Favorite_Planets(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user = db.relationship("User", backref="favorite_planets", uselist=False)
+    planet_id = db.Column(db.Integer, db.ForeignKey('planets.id'), nullable=False)
+    planet = db.relationship("Planets", uselist=False)
+
+    def __repr__(self):
+        return '<Favorite_Planets %r>' % self.id
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "user_id": self.user_id,
+            "planet_id": self.planet_id
+        }
+    
+
+
 
 class Characters(db.Model):
     
@@ -32,6 +69,9 @@ class Characters(db.Model):
     weight = db.Column(db.String(256), unique=False, nullable=False)
     complexion = db.Column(db.String(256), unique=False, nullable=False)
     url = db.Column(db.String(256), unique=False, nullable=False)
+
+    def __repr__(self):
+        return '<Characters %r>' % self.name
 
     def serialize(self):
         return {
@@ -66,6 +106,9 @@ class Planets(db.Model):
     terrain = db.Column(db.String(256), unique=False, nullable=False)
     surface_water = db.Column(db.String(256), unique=False, nullable=False)
     url = db.Column(db.String(256), unique=False, nullable=False)
+
+    def __repr__(self):
+        return '<Planets %r>' % self.name
 
 
     def serialize(self):
