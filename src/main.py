@@ -48,14 +48,14 @@ def get_all_favorites():
 
     return jsonify(response_body), 200
 
-@app.route('/user/<int:user_id>/favorites', methods=['GET'])
-def get_user_favorites(user_id):
+# @app.route('/user/<int:user_id>/favorites', methods=['POST'])
+# def get_user_favorites(user_id):
 
-    response_body = {
-        "msg": "Hello, this is your GET /user/favorites response "
-    }
+#     response_body = {
+#         "msg": "Hello, this is your GET /user/favorites response "
+#     }
 
-    return jsonify(response_body), 200
+#     return jsonify(response_body), 200
 
 
 
@@ -64,33 +64,47 @@ def handle_characters():
 
     characters = Characters.query.all()
     all_characters = list(map(lambda character: character.serialize(), characters))
-
     return jsonify(all_characters), 200
 
 
+
 @app.route('/characters/<int:id>', methods=['GET'])
-def get_single_characters(id):
+def get_characters_characters(id):
     single_person = Characters.query.get(id)
-
-
     return jsonify(single_person.serialize()), 200
 
 
 @app.route('/planets', methods=['GET'])
 def handle_planets():
-
     planets = Planets.query.all()
     all_planets = list(map(lambda planet: planet.serialize(), planets))
-
     return jsonify(all_planets), 200
+
 
 
 @app.route('/planets/<int:id>', methods=['GET'])
 def get_single_planets(id):
-    single_person = planets.query.get(id)
-
-
+    single_person = Planets.query.get(id)
     return jsonify(single_person.serialize()), 200
+
+@app.route('/favorite/characters/<int:id>', methods=['POST'])
+def get_characters(id):
+    single_person = Characters.query.get(id)
+    return jsonify(single_person.serialize()), 200
+
+
+@app.route('/favorite/planets/<int:id>', methods=['DELETE'])
+def get_favorite_planets(id):
+    single_person = Planets.query.get(id)
+    return jsonify(single_person.serialize()), 200
+
+@app.route('/favorite/characters/<int:id>', methods=['DELETE'])
+def get_favorite_characters(id):
+    single_person = Characters.query.get(id)
+    return jsonify(single_person.serialize()), 200
+
+
+    
 # @app.route('/characters', methods=['GET'])
 # def handle_hello():
 
